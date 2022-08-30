@@ -2,14 +2,15 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const isDev = process.env.NODE_ENV === 'development'
+const timestamp = (new Date()).getTime();
 
 module.exports = {
-  mode: isDev ? "development" : "production",
+  mode: "production",
   entry: path.join(__dirname, "../src/index.tsx"),
   output: {
     path: path.join(__dirname, "../dist"),
-    filename: "[name][hash:8].js",
+    filename: "[name].[contenthash].js",
+    chunkFilename: `[name].${timestamp}.async.css`,
     clean: true,
   },
   plugins: [
@@ -18,7 +19,8 @@ module.exports = {
       filename: "index.html",
     }),
     new MiniCssExtractPlugin({
-      filename: "[name][hash:8].css"
+      filename: "[name].[contenthash].css",
+      chunkFilename: `[name].${timestamp}.chunk.css`
     }),
   ],
   devtool: "inline-source-map",
@@ -47,6 +49,29 @@ module.exports = {
         },
       },
     ],
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'async', 
+      automaticNameDelimiter: '.', 
+      name: false,
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 10,
+      maxInitialRequests: 5,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        default: {
+          minChunks: 1,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    }
   },
   devServer: {
     port: "9000",
