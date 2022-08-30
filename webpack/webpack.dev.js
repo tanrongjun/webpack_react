@@ -1,7 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const timestamp = (new Date()).getTime();
 
@@ -23,7 +22,7 @@ module.exports = {
       filename: "[name].[contenthash].css",
       chunkFilename: `[name].${timestamp}.chunk.css`
     }),
-    new ReactRefreshWebpackPlugin()
+    // new ReactRefreshWebpackPlugin()
   ],
   devtool: "inline-source-map",
   resolve: {
@@ -46,12 +45,7 @@ module.exports = {
       {
         test: /\.(t|j)sx?$/,
         exclude: /node_modules/,
-        use: [{
-          loader: "babel-loader",
-          options: {
-            plugins: [require.resolve('react-refresh/babel')]
-          }
-        }],
+        use: ["babel-loader"],
       },
     ],
   },
