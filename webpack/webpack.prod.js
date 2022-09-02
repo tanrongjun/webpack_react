@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const WebpackBar = require('webpackbar')
 
 const timestamp = (new Date()).getTime();
 
@@ -22,6 +23,7 @@ module.exports = {
       filename: "[name].[contenthash].css",
       chunkFilename: `[name].${timestamp}.chunk.css`
     }),
+    new WebpackBar()
   ],
   devtool: "inline-source-map",
   resolve: {
@@ -75,6 +77,7 @@ module.exports = {
   },
   devServer: {
     port: "9000",
-    host: "127.0.0.1"
+    host: "127.0.0.1",
+    historyApiFallback: true
   },
 };

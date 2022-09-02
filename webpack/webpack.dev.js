@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const WebpackBar = require('webpackbar')
 
 const timestamp = (new Date()).getTime();
 
@@ -22,7 +23,7 @@ module.exports = {
       filename: "[name].[contenthash].css",
       chunkFilename: `[name].${timestamp}.chunk.css`
     }),
-    // new ReactRefreshWebpackPlugin()
+    new WebpackBar()
   ],
   devtool: "inline-source-map",
   resolve: {
